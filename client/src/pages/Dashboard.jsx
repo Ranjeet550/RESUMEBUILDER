@@ -23,7 +23,7 @@ export default function Dashboard() {
   const fetchResumes = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/resume');
+      const response = await api.get('resume');
       setResumes(response.data);
     } catch (error) {
       message.error('Failed to fetch resumes');
@@ -39,7 +39,7 @@ export default function Dashboard() {
     }
 
     try {
-      const response = await api.post('/resume', {
+      const response = await api.post('resume', {
         title: newResumeName,
         personalInfo: {},
         experience: [],
@@ -72,7 +72,7 @@ export default function Dashboard() {
       okButtonProps: { danger: true },
       onOk: async () => {
         try {
-          await api.delete(`/resume/${resumeId}`);
+          await api.delete(`resume/${resumeId}`);
           message.success('Resume deleted successfully');
           fetchResumes();
         } catch (error) {

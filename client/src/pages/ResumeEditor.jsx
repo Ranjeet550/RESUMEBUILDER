@@ -58,7 +58,7 @@ export default function ResumeEditor() {
   const fetchResume = async () => {
     setLoading(true);
     try {
-      const response = await api.get(`/resume/${id}`);
+      const response = await api.get(`resume/${id}`);
       setResume(response.data);
     } catch (error) {
       message.error('Failed to load resume');
@@ -77,10 +77,10 @@ export default function ResumeEditor() {
         template: currentTemplate,
       };
       if (id) {
-        await api.put(`/resume/${id}`, updatedResume);
+        await api.put(`resume/${id}`, updatedResume);
         message.success('Resume saved successfully');
       } else {
-        const response = await api.post('/resume', updatedResume);
+        const response = await api.post('resume', updatedResume);
         message.success('Resume created successfully');
         navigate(`/editor/${response.data._id}`);
       }

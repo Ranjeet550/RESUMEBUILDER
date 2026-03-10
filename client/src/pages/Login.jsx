@@ -14,7 +14,7 @@ export default function Login() {
   const onFinish = async (values) => {
     setLoading(true);
     try {
-      const response = await api.post('/auth/login', values);
+      const response = await api.post('auth/login', values);
       login(response.data.user, response.data.token);
       message.success('Login successful');
       navigate('/dashboard');

@@ -14,7 +14,7 @@ export default function Register() {
   const onFinish = async (values) => {
     setLoading(true);
     try {
-      const response = await api.post('/auth/register', values);
+      const response = await api.post('auth/register', values);
       login(response.data.user, response.data.token);
       message.success('Registration successful');
       navigate('/dashboard');

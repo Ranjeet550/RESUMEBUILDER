@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 
+const baseURL = import.meta.env.VITE_API_URL;
+
 const api = axios.create({
-  baseURL: 'https://resumebuilder-5kat.onrender.com/api'
+  baseURL: baseURL
 });
 
 api.interceptors.request.use((config) => {
