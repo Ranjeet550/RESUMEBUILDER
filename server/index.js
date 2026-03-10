@@ -11,21 +11,8 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: function(origin, callback) {
-    const allowedOrigins = [
-      process.env.CLIENT_URL,
-      'https://resumebuilder-opal-five.vercel.app',
-      'http://localhost:5173',
-      'http://localhost:3000'
-    ].filter(Boolean);
-    
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
+  origin: '*',
+  credentials: false,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
