@@ -57,13 +57,16 @@ export default function ResumePreview({ template, theme: themeName }) {
   const styles = getTemplateStyles();
   const sectionStyle = { marginBottom: '24px' };
 
+  // Ensure personalInfo exists
+  const safePersonalInfo = personalInfo || {};
+
   const contactInfo = [
-    { icon: <MailOutlined />, value: personalInfo.email, label: 'Email' },
-    { icon: <PhoneOutlined />, value: personalInfo.phone, label: 'Phone' },
-    { icon: <EnvironmentOutlined />, value: personalInfo.location, label: 'Location' },
-    { icon: <LinkOutlined />, value: personalInfo.website, label: 'Website' },
-    { icon: <LinkedinOutlined />, value: personalInfo.linkedin, label: 'LinkedIn' },
-    { icon: <GithubOutlined />, value: personalInfo.github, label: 'GitHub' }
+    { icon: <MailOutlined />, value: safePersonalInfo.email, label: 'Email' },
+    { icon: <PhoneOutlined />, value: safePersonalInfo.phone, label: 'Phone' },
+    { icon: <EnvironmentOutlined />, value: safePersonalInfo.location, label: 'Location' },
+    { icon: <LinkOutlined />, value: safePersonalInfo.website, label: 'Website' },
+    { icon: <LinkedinOutlined />, value: safePersonalInfo.linkedin, label: 'LinkedIn' },
+    { icon: <GithubOutlined />, value: safePersonalInfo.github, label: 'GitHub' }
   ];
 
   return (
@@ -71,7 +74,7 @@ export default function ResumePreview({ template, theme: themeName }) {
       {/* Header with Name */}
       <div style={styles.header}>
         <h1 style={{ margin: '0 0 12px 0', fontSize: '28px', fontWeight: 'bold', color: textColor }}>
-          {personalInfo.fullName || 'Your Name'}
+          {safePersonalInfo.fullName || 'Your Name'}
         </h1>
         
         {/* Contact Information with Icons */}
@@ -88,10 +91,10 @@ export default function ResumePreview({ template, theme: themeName }) {
       </div>
 
       {/* Professional Summary */}
-      {personalInfo.summary && (
+      {safePersonalInfo.summary && (
         <div style={sectionStyle}>
           <h2 style={styles.sectionTitle}>Professional Summary</h2>
-          <p style={styles.entryText}>{personalInfo.summary}</p>
+          <p style={styles.entryText}>{safePersonalInfo.summary}</p>
         </div>
       )}
 
