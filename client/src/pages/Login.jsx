@@ -15,9 +15,13 @@ export default function Login() {
     setLoading(true);
     try {
       const response = await api.post('auth/login', values);
-      login(response.data.user, response.data.token);
-      message.success('Login successful');
-      navigate('/dashboard');
+      if (response.data && response.data.user && response.data.token) {
+        login(response.data.user, response.data.token);
+        message.success('Login successful');
+        navigate('/dashboard');
+      } else {
+        message.error('Invalid response from server');
+      }
     } catch (error) {
       message.error(error.response?.data?.message || 'Login failed');
     } finally {
