@@ -1,19 +1,40 @@
 import { Form, Input } from 'antd';
 import { MailOutlined, PhoneOutlined, EnvironmentOutlined, LinkOutlined, LinkedinOutlined, GithubOutlined, FileTextOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
 import { useResumeStore } from '../../store/resumeStore';
+import AISuggestionButton from '../AISuggestionButton';
 
 export default function PersonalInfoForm() {
   const resume = useResumeStore((state) => state.resume);
   const updatePersonalInfo = useResumeStore((state) => state.updatePersonalInfo);
   const [form] = Form.useForm();
+  const [summary, setSummary] = useState('');
 
   const personalInfo = resume?.personalInfo || {};
 
+  useEffect(() => {
+    setSummary(personalInfo.summary || '');
+    form.setFieldsValue(personalInfo);
+  }, [personalInfo, form]);
+
   const handleChange = (changedValues) => {
+    if (changedValues.summary !== undefined) {
+      setSummary(changedValues.summary);
+    }
     updatePersonalInfo({
       ...personalInfo,
       ...changedValues
     });
+  };
+
+  const handleSummaryUpdate = (suggestion) => {
+    setSummary(suggestion);
+    const updatedInfo = {
+      ...personalInfo,
+      summary: suggestion
+    };
+    updatePersonalInfo(updatedInfo);
+    form.setFieldsValue({ summary: suggestion });
   };
 
   return (
@@ -23,7 +44,6 @@ export default function PersonalInfoForm() {
         form={form}
         layout="vertical"
         onValuesChange={handleChange}
-        initialValues={personalInfo}
       >
         <Form.Item
           name="fullName"
@@ -82,7 +102,17 @@ export default function PersonalInfoForm() {
         >
           <Input.TextArea
             rows={4}
+            value={summary}
+            onChange={(e) => {
+              setSummary(e.target.value);
+              handleChange({ summary: e.target.value });
+            }}
             placeholder="Brief summary about yourself and your career objectives..."
+          />
+          <AISuggestionButton
+            fieldType="professionalSummary"
+            context={`${personalInfo.fullName || 'Professional'} with experience and skills`}
+            onSuggestion={handleSummaryUpdate}
           />
         </Form.Item>
       </Form>

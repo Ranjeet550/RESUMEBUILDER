@@ -1,6 +1,7 @@
 import { Form, Input, Button, Card, Tag } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useResumeStore } from '../../store/resumeStore';
+import AISuggestionButton from '../AISuggestionButton';
 
 export default function ProjectsForm() {
   const resume = useResumeStore((state) => state.resume);
@@ -12,7 +13,7 @@ export default function ProjectsForm() {
 
   const handleAddProject = () => {
     addProject({
-      title: '',
+      name: '',
       description: '',
       technologies: [],
       link: '',
@@ -46,8 +47,8 @@ export default function ProjectsForm() {
           <Form layout="vertical">
             <Form.Item label="Project Title">
               <Input
-                value={project.title}
-                onChange={(e) => handleUpdateProject(index, 'title', e.target.value)}
+                value={project.name}
+                onChange={(e) => handleUpdateProject(index, 'name', e.target.value)}
                 placeholder="Project name"
               />
             </Form.Item>
@@ -58,6 +59,11 @@ export default function ProjectsForm() {
                 value={project.description}
                 onChange={(e) => handleUpdateProject(index, 'description', e.target.value)}
                 placeholder="Describe your project..."
+              />
+              <AISuggestionButton
+                fieldType="projectDescription"
+                context={`${project.name} using ${project.technologies?.join(', ') || 'various technologies'}`}
+                onSuggestion={(suggestion) => handleUpdateProject(index, 'description', suggestion)}
               />
             </Form.Item>
 

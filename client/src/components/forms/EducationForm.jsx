@@ -1,6 +1,7 @@
 import { Form, Input, Button, Card } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useResumeStore } from '../../store/resumeStore';
+import AISuggestionButton from '../AISuggestionButton';
 
 export default function EducationForm() {
   const resume = useResumeStore((state) => state.resume);
@@ -91,6 +92,11 @@ export default function EducationForm() {
                 value={edu.description}
                 onChange={(e) => handleUpdateEducation(index, 'description', e.target.value)}
                 placeholder="Additional details about your education..."
+              />
+              <AISuggestionButton
+                fieldType="educationDescription"
+                context={`${edu.degree} in ${edu.field} from ${edu.school}`}
+                onSuggestion={(suggestion) => handleUpdateEducation(index, 'description', suggestion)}
               />
             </Form.Item>
           </Form>

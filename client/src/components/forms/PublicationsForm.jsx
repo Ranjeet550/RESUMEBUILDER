@@ -1,6 +1,7 @@
 import { Form, Input, Button, Card } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useResumeStore } from '../../store/resumeStore';
+import AISuggestionButton from '../AISuggestionButton';
 
 export default function PublicationsForm() {
   const resume = useResumeStore((state) => state.resume);
@@ -14,7 +15,7 @@ export default function PublicationsForm() {
     addPublication({
       title: '',
       publisher: '',
-      date: '',
+      publicationDate: '',
       link: '',
       description: ''
     });
@@ -61,8 +62,8 @@ export default function PublicationsForm() {
             <Form.Item label="Publication Date">
               <Input
                 type="month"
-                value={pub.date}
-                onChange={(e) => handleUpdatePublication(index, 'date', e.target.value)}
+                value={pub.publicationDate}
+                onChange={(e) => handleUpdatePublication(index, 'publicationDate', e.target.value)}
               />
             </Form.Item>
 
@@ -80,6 +81,11 @@ export default function PublicationsForm() {
                 value={pub.description}
                 onChange={(e) => handleUpdatePublication(index, 'description', e.target.value)}
                 placeholder="Describe the publication..."
+              />
+              <AISuggestionButton
+                fieldType="publicationDescription"
+                context={`${pub.title} published in ${pub.publisher}`}
+                onSuggestion={(suggestion) => handleUpdatePublication(index, 'description', suggestion)}
               />
             </Form.Item>
           </Form>

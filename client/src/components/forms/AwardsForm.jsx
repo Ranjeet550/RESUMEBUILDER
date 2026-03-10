@@ -1,6 +1,7 @@
 import { Form, Input, Button, Card } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useResumeStore } from '../../store/resumeStore';
+import AISuggestionButton from '../AISuggestionButton';
 
 export default function AwardsForm() {
   const resume = useResumeStore((state) => state.resume);
@@ -12,7 +13,7 @@ export default function AwardsForm() {
 
   const handleAddAward = () => {
     addAward({
-      title: '',
+      name: '',
       issuer: '',
       date: '',
       description: ''
@@ -43,8 +44,8 @@ export default function AwardsForm() {
           <Form layout="vertical">
             <Form.Item label="Award Title">
               <Input
-                value={award.title}
-                onChange={(e) => handleUpdateAward(index, 'title', e.target.value)}
+                value={award.name}
+                onChange={(e) => handleUpdateAward(index, 'name', e.target.value)}
                 placeholder="Award name"
               />
             </Form.Item>
@@ -71,6 +72,11 @@ export default function AwardsForm() {
                 value={award.description}
                 onChange={(e) => handleUpdateAward(index, 'description', e.target.value)}
                 placeholder="Describe the award..."
+              />
+              <AISuggestionButton
+                fieldType="awardDescription"
+                context={`${award.name} from ${award.issuer}`}
+                onSuggestion={(suggestion) => handleUpdateAward(index, 'description', suggestion)}
               />
             </Form.Item>
           </Form>

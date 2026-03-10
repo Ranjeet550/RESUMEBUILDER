@@ -1,6 +1,7 @@
 import { Form, Input, Button, Card } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useResumeStore } from '../../store/resumeStore';
+import AISuggestionButton from '../AISuggestionButton';
 
 export default function VolunteerForm() {
   const resume = useResumeStore((state) => state.resume);
@@ -91,6 +92,11 @@ export default function VolunteerForm() {
                 value={vol.description}
                 onChange={(e) => handleUpdateVolunteer(index, 'description', e.target.value)}
                 placeholder="Describe your volunteer work..."
+              />
+              <AISuggestionButton
+                fieldType="volunteerDescription"
+                context={`${vol.position} at ${vol.organization}`}
+                onSuggestion={(suggestion) => handleUpdateVolunteer(index, 'description', suggestion)}
               />
             </Form.Item>
           </Form>

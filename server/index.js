@@ -2,10 +2,12 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import authRoutes from './routes/auth.js';
-import resumeRoutes from './routes/resume.js';
 
 dotenv.config();
+
+import authRoutes from './routes/auth.js';
+import resumeRoutes from './routes/resume.js';
+import aiRoutes from './routes/ai.js';
 
 const app = express();
 
@@ -27,6 +29,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/resume-bu
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/resume', resumeRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

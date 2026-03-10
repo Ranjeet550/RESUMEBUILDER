@@ -1,6 +1,7 @@
 import { Form, Input, Button, Space, Checkbox, Card } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useResumeStore } from '../../store/resumeStore';
+import AISuggestionButton from '../AISuggestionButton';
 
 export default function ExperienceForm() {
   const resume = useResumeStore((state) => state.resume);
@@ -102,6 +103,11 @@ export default function ExperienceForm() {
                 value={exp.description}
                 onChange={(e) => handleUpdateExperience(index, 'description', e.target.value)}
                 placeholder="Describe your responsibilities and achievements..."
+              />
+              <AISuggestionButton
+                fieldType="jobDescription"
+                context={`${exp.jobTitle} at ${exp.company}`}
+                onSuggestion={(suggestion) => handleUpdateExperience(index, 'description', suggestion)}
               />
             </Form.Item>
           </Form>

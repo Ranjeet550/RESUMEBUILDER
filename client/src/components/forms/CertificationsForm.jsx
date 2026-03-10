@@ -1,6 +1,7 @@
 import { Form, Input, Button, Card } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useResumeStore } from '../../store/resumeStore';
+import AISuggestionButton from '../AISuggestionButton';
 
 export default function CertificationsForm() {
   const resume = useResumeStore((state) => state.resume);
@@ -17,7 +18,8 @@ export default function CertificationsForm() {
       issueDate: '',
       expiryDate: '',
       credentialId: '',
-      credentialUrl: ''
+      credentialUrl: '',
+      description: ''
     });
   };
 
@@ -90,6 +92,20 @@ export default function CertificationsForm() {
                 value={cert.credentialUrl}
                 onChange={(e) => handleUpdateCertification(index, 'credentialUrl', e.target.value)}
                 placeholder="https://..."
+              />
+            </Form.Item>
+
+            <Form.Item label="Description">
+              <Input.TextArea
+                rows={2}
+                value={cert.description}
+                onChange={(e) => handleUpdateCertification(index, 'description', e.target.value)}
+                placeholder="Describe the certification and its relevance..."
+              />
+              <AISuggestionButton
+                fieldType="certificationDescription"
+                context={`${cert.name} from ${cert.issuer}`}
+                onSuggestion={(suggestion) => handleUpdateCertification(index, 'description', suggestion)}
               />
             </Form.Item>
           </Form>

@@ -24,7 +24,8 @@ const initialResume = {
   publications: [],
   template: 'modern',
   theme: 'blue',
-  visibility: 'private'
+  visibility: 'private',
+  sectionOrder: ['personal', 'experience', 'education', 'skills', 'projects', 'certifications', 'languages', 'volunteer', 'awards', 'publications']
 };
 
 export const useResumeStore = create((set) => ({
@@ -245,5 +246,11 @@ export const useResumeStore = create((set) => ({
     })),
 
   setResumes: (resumes) => set({ resumes }),
-  resetResume: () => set({ resume: initialResume })
+  resetResume: () => set({ resume: initialResume }),
+  
+  // Section ordering
+  setSectionOrder: (sectionOrder) =>
+    set((state) => ({
+      resume: { ...state.resume, sectionOrder }
+    })),
 }));

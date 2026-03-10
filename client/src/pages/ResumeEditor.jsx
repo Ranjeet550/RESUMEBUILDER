@@ -19,6 +19,7 @@ import PublicationsForm from '../components/forms/PublicationsForm';
 import ResumePreview from '../components/preview/ResumePreview';
 import ThemeSwitcherVisual from '../components/ThemeSwitcherVisual';
 import TemplateSwitcherVisual from '../components/TemplateSwitcherVisual';
+import SectionReorderer from '../components/SectionReorderer';
 
 const { Content } = Layout;
 
@@ -315,8 +316,12 @@ export default function ResumeEditor() {
           width={isMobile ? '100%' : 'clamp(300px, 50vw, 500px)'}
           styles={{ body: { padding: 'clamp(12px, 3vw, 24px)', overflow: 'auto', maxHeight: 'calc(100vh - 100px)' } }}
         >
-          <ThemeSwitcherVisual currentTheme={currentTheme} onThemeChange={handleThemeChange} />
-          <TemplateSwitcherVisual currentTemplate={currentTemplate} onTemplateChange={handleTemplateChange} />
+          <SectionReorderer />
+          <div style={{ marginTop: 32, borderTop: '1px solid #f0f0f0', paddingTop: 24 }}>
+            <h4 style={{ marginBottom: 16 }}>Theme & Template</h4>
+            <ThemeSwitcherVisual currentTheme={currentTheme} onThemeChange={handleThemeChange} />
+            <TemplateSwitcherVisual currentTemplate={currentTemplate} onTemplateChange={handleTemplateChange} />
+          </div>
         </Drawer>
       </Layout>
     </ConfigProvider>

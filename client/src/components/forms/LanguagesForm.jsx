@@ -12,7 +12,7 @@ export default function LanguagesForm() {
 
   const handleAddLanguage = () => {
     addLanguage({
-      language: '',
+      name: '',
       proficiency: 'Intermediate'
     });
   };
@@ -42,8 +42,8 @@ export default function LanguagesForm() {
             <Form layout="vertical">
               <Form.Item label="Language">
                 <Input
-                  value={lang.language}
-                  onChange={(e) => handleUpdateLanguage(index, 'language', e.target.value)}
+                  value={lang.name}
+                  onChange={(e) => handleUpdateLanguage(index, 'name', e.target.value)}
                   placeholder="English, Spanish, etc."
                 />
               </Form.Item>
