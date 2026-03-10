@@ -100,6 +100,10 @@ const resumeSchema = new mongoose.Schema({
     enum: ['private', 'public'],
     default: 'private'
   },
+  sectionOrder: {
+    type: [String],
+    default: ['personal', 'experience', 'education', 'skills', 'projects', 'certifications', 'languages', 'volunteer', 'awards', 'publications']
+  },
   createdAt: {
     type: Date,
     default: Date.now

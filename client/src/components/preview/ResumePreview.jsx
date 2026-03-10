@@ -4,7 +4,7 @@ import { themes } from '../../config/theme';
 
 export default function ResumePreview({ template, theme: themeName }) {
   const resume = useResumeStore((state) => state.resume);
-  const { personalInfo, experience, education, skills, projects, certifications, languages, volunteer, awards, publications } = resume;
+  const { personalInfo, experience, education, skills, projects, certifications, languages, volunteer, awards, publications, sectionOrder } = resume;
 
   // Get theme colors
   const themeConfig = themes[themeName] || themes.blue;
@@ -69,6 +69,166 @@ export default function ResumePreview({ template, theme: themeName }) {
     { icon: <GithubOutlined />, value: safePersonalInfo.github, label: 'GitHub' }
   ];
 
+  // Get section order, default to standard order if not set
+  const order = sectionOrder || ['personal', 'experience', 'education', 'skills', 'projects', 'certifications', 'languages', 'volunteer', 'awards', 'publications'];
+
+  // Render section based on key
+  const renderSection = (sectionKey) => {
+    switch (sectionKey) {
+      case 'personal':
+        return null; // Personal info is in header
+      
+      case 'experience':
+        return experience && experience.length > 0 && experience.some(exp => exp.jobTitle || exp.company) ? (
+          <div style={sectionStyle}>
+            <h2 style={styles.sectionTitle}>Work Experience</h2>
+            {experience.map((exp, index) => (
+              (exp.jobTitle || exp.company) && (
+                <div key={index} style={{ marginBottom: '16px' }}>
+                  <p style={styles.entryTitle}>{exp.jobTitle} {exp.company && `at ${exp.company}`}</p>
+                  <p style={styles.entrySubtitle}>{exp.location} {exp.startDate && `| ${exp.startDate}`} {exp.endDate && `- ${exp.endDate}`}</p>
+                  {exp.description && <p style={styles.entryText}>{exp.description}</p>}
+                </div>
+              )
+            ))}
+          </div>
+        ) : null;
+
+      case 'education':
+        return education && education.length > 0 && education.some(edu => edu.school || edu.degree || edu.field) ? (
+          <div style={sectionStyle}>
+            <h2 style={styles.sectionTitle}>Education</h2>
+            {education.map((edu, index) => (
+              (edu.school || edu.degree || edu.field) && (
+                <div key={index} style={{ marginBottom: '16px' }}>
+                  <p style={styles.entryTitle}>{edu.degree} {edu.field && `in ${edu.field}`}</p>
+                  <p style={styles.entrySubtitle}>{edu.school} {edu.startDate && `| ${edu.startDate}`} {edu.endDate && `- ${edu.endDate}`}</p>
+                  {edu.description && <p style={styles.entryText}>{edu.description}</p>}
+                </div>
+              )
+            ))}
+          </div>
+        ) : null;
+
+      case 'skills':
+        return skills && skills.length > 0 ? (
+          <div style={sectionStyle}>
+            <h2 style={styles.sectionTitle}>Skills</h2>
+            {skills.map((skillGroup, index) => (
+              <div key={index} style={{ marginBottom: '12px' }}>
+                {skillGroup.category && <p style={{ ...styles.entryTitle, marginBottom: '6px' }}>{skillGroup.category}</p>}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                  {Array.isArray(skillGroup.skills) && skillGroup.skills.map((skill, skillIndex) => (
+                    <span key={skillIndex} style={{ backgroundColor: '#f0f0f0', padding: '4px 8px', borderRadius: '4px', fontSize: '11px', color: textColor }}>
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : null;
+
+      case 'projects':
+        return projects && projects.length > 0 && projects.some(p => p.title) ? (
+          <div style={sectionStyle}>
+            <h2 style={styles.sectionTitle}>Projects</h2>
+            {projects.map((project, index) => (
+              project.title && (
+                <div key={index} style={{ marginBottom: '16px' }}>
+                  <p style={styles.entryTitle}>{project.title}</p>
+                  {project.link && <p style={styles.entrySubtitle}>{project.link}</p>}
+                  {project.description && <p style={styles.entryText}>{project.description}</p>}
+                </div>
+              )
+            ))}
+          </div>
+        ) : null;
+
+      case 'certifications':
+        return certifications && certifications.length > 0 && certifications.some(c => c.name) ? (
+          <div style={sectionStyle}>
+            <h2 style={styles.sectionTitle}>Certifications</h2>
+            {certifications.map((cert, index) => (
+              cert.name && (
+                <div key={index} style={{ marginBottom: '16px' }}>
+                  <p style={styles.entryTitle}>{cert.name}</p>
+                  <p style={styles.entrySubtitle}>{cert.issuer} {cert.issueDate && `| ${cert.issueDate}`}</p>
+                </div>
+              )
+            ))}
+          </div>
+        ) : null;
+
+      case 'languages':
+        return languages && languages.length > 0 && languages.some(l => l.language) ? (
+          <div style={sectionStyle}>
+            <h2 style={styles.sectionTitle}>Languages</h2>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+              {languages.map((lang, index) => (
+                lang.language && (
+                  <span key={index} style={{ fontSize: '11px', color: textColor }}>
+                    {lang.language} {lang.proficiency && `- ${lang.proficiency}`}
+                  </span>
+                )
+              ))}
+            </div>
+          </div>
+        ) : null;
+
+      case 'volunteer':
+        return volunteer && volunteer.length > 0 && volunteer.some(v => v.position || v.organization) ? (
+          <div style={sectionStyle}>
+            <h2 style={styles.sectionTitle}>Volunteer Experience</h2>
+            {volunteer.map((vol, index) => (
+              (vol.position || vol.organization) && (
+                <div key={index} style={{ marginBottom: '16px' }}>
+                  <p style={styles.entryTitle}>{vol.position} {vol.organization && `at ${vol.organization}`}</p>
+                  <p style={styles.entrySubtitle}>{vol.startDate} {vol.endDate && `- ${vol.endDate}`}</p>
+                  {vol.description && <p style={styles.entryText}>{vol.description}</p>}
+                </div>
+              )
+            ))}
+          </div>
+        ) : null;
+
+      case 'awards':
+        return awards && awards.length > 0 && awards.some(a => a.title) ? (
+          <div style={sectionStyle}>
+            <h2 style={styles.sectionTitle}>Awards & Recognition</h2>
+            {awards.map((award, index) => (
+              award.title && (
+                <div key={index} style={{ marginBottom: '16px' }}>
+                  <p style={styles.entryTitle}>{award.title}</p>
+                  <p style={styles.entrySubtitle}>{award.issuer} {award.date && `| ${award.date}`}</p>
+                  {award.description && <p style={styles.entryText}>{award.description}</p>}
+                </div>
+              )
+            ))}
+          </div>
+        ) : null;
+
+      case 'publications':
+        return publications && publications.length > 0 && publications.some(p => p.title) ? (
+          <div style={sectionStyle}>
+            <h2 style={styles.sectionTitle}>Publications</h2>
+            {publications.map((pub, index) => (
+              pub.title && (
+                <div key={index} style={{ marginBottom: '16px' }}>
+                  <p style={styles.entryTitle}>{pub.title}</p>
+                  <p style={styles.entrySubtitle}>{pub.publisher} {pub.date && `| ${pub.date}`}</p>
+                  {pub.description && <p style={styles.entryText}>{pub.description}</p>}
+                </div>
+              )
+            ))}
+          </div>
+        ) : null;
+
+      default:
+        return null;
+    }
+  };
+
   return (
     <div id="resume-preview" style={styles.container}>
       {/* Header with Name */}
@@ -98,151 +258,12 @@ export default function ResumePreview({ template, theme: themeName }) {
         </div>
       )}
 
-      {/* Experience */}
-      {experience && experience.length > 0 && experience.some(exp => exp.jobTitle || exp.company) && (
-        <div style={sectionStyle}>
-          <h2 style={styles.sectionTitle}>Work Experience</h2>
-          {experience.map((exp, index) => (
-            (exp.jobTitle || exp.company) && (
-              <div key={index} style={{ marginBottom: '16px' }}>
-                <p style={styles.entryTitle}>{exp.jobTitle} {exp.company && `at ${exp.company}`}</p>
-                <p style={styles.entrySubtitle}>{exp.location} {exp.startDate && `| ${exp.startDate}`} {exp.endDate && `- ${exp.endDate}`}</p>
-                {exp.description && <p style={styles.entryText}>{exp.description}</p>}
-              </div>
-            )
-          ))}
+      {/* Render sections in order */}
+      {order.map((sectionKey) => (
+        <div key={sectionKey}>
+          {renderSection(sectionKey)}
         </div>
-      )}
-
-      {/* Education */}
-      {education && education.length > 0 && education.some(edu => edu.school || edu.degree || edu.field) && (
-        <div style={sectionStyle}>
-          <h2 style={styles.sectionTitle}>Education</h2>
-          {education.map((edu, index) => (
-            (edu.school || edu.degree || edu.field) && (
-              <div key={index} style={{ marginBottom: '16px' }}>
-                <p style={styles.entryTitle}>{edu.degree} {edu.field && `in ${edu.field}`}</p>
-                <p style={styles.entrySubtitle}>{edu.school} {edu.startDate && `| ${edu.startDate}`} {edu.endDate && `- ${edu.endDate}`}</p>
-                {edu.description && <p style={styles.entryText}>{edu.description}</p>}
-              </div>
-            )
-          ))}
-        </div>
-      )}
-
-      {/* Skills */}
-      {skills && skills.length > 0 && (
-        <div style={sectionStyle}>
-          <h2 style={styles.sectionTitle}>Skills</h2>
-          {skills.map((skillGroup, index) => (
-            <div key={index} style={{ marginBottom: '12px' }}>
-              {skillGroup.category && <p style={{ ...styles.entryTitle, marginBottom: '6px' }}>{skillGroup.category}</p>}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                {Array.isArray(skillGroup.skills) && skillGroup.skills.map((skill, skillIndex) => (
-                  <span key={skillIndex} style={{ backgroundColor: '#f0f0f0', padding: '4px 8px', borderRadius: '4px', fontSize: '11px', color: textColor }}>
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Projects */}
-      {projects && projects.length > 0 && projects.some(p => p.name) && (
-        <div style={sectionStyle}>
-          <h2 style={styles.sectionTitle}>Projects</h2>
-          {projects.map((project, index) => (
-            project.name && (
-              <div key={index} style={{ marginBottom: '16px' }}>
-                <p style={styles.entryTitle}>{project.name}</p>
-                {project.link && <p style={styles.entrySubtitle}>{project.link}</p>}
-                {project.description && <p style={styles.entryText}>{project.description}</p>}
-              </div>
-            )
-          ))}
-        </div>
-      )}
-
-      {/* Certifications */}
-      {certifications && certifications.length > 0 && certifications.some(c => c.name) && (
-        <div style={sectionStyle}>
-          <h2 style={styles.sectionTitle}>Certifications</h2>
-          {certifications.map((cert, index) => (
-            cert.name && (
-              <div key={index} style={{ marginBottom: '16px' }}>
-                <p style={styles.entryTitle}>{cert.name}</p>
-                <p style={styles.entrySubtitle}>{cert.issuer} {cert.issueDate && `| ${cert.issueDate}`}</p>
-              </div>
-            )
-          ))}
-        </div>
-      )}
-
-      {/* Languages */}
-      {languages && languages.length > 0 && languages.some(l => l.name) && (
-        <div style={sectionStyle}>
-          <h2 style={styles.sectionTitle}>Languages</h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
-            {languages.map((lang, index) => (
-              lang.name && (
-                <span key={index} style={{ fontSize: '11px', color: textColor }}>
-                  {lang.name} {lang.proficiency && `- ${lang.proficiency}`}
-                </span>
-              )
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Volunteer */}
-      {volunteer && volunteer.length > 0 && volunteer.some(v => v.position || v.organization) && (
-        <div style={sectionStyle}>
-          <h2 style={styles.sectionTitle}>Volunteer Experience</h2>
-          {volunteer.map((vol, index) => (
-            (vol.position || vol.organization) && (
-              <div key={index} style={{ marginBottom: '16px' }}>
-                <p style={styles.entryTitle}>{vol.position} {vol.organization && `at ${vol.organization}`}</p>
-                <p style={styles.entrySubtitle}>{vol.startDate} {vol.endDate && `- ${vol.endDate}`}</p>
-                {vol.description && <p style={styles.entryText}>{vol.description}</p>}
-              </div>
-            )
-          ))}
-        </div>
-      )}
-
-      {/* Awards */}
-      {awards && awards.length > 0 && awards.some(a => a.name) && (
-        <div style={sectionStyle}>
-          <h2 style={styles.sectionTitle}>Awards</h2>
-          {awards.map((award, index) => (
-            award.name && (
-              <div key={index} style={{ marginBottom: '16px' }}>
-                <p style={styles.entryTitle}>{award.name}</p>
-                <p style={styles.entrySubtitle}>{award.issuer} {award.date && `| ${award.date}`}</p>
-                {award.description && <p style={styles.entryText}>{award.description}</p>}
-              </div>
-            )
-          ))}
-        </div>
-      )}
-
-      {/* Publications */}
-      {publications && publications.length > 0 && publications.some(p => p.title) && (
-        <div style={sectionStyle}>
-          <h2 style={styles.sectionTitle}>Publications</h2>
-          {publications.map((pub, index) => (
-            pub.title && (
-              <div key={index} style={{ marginBottom: '16px' }}>
-                <p style={styles.entryTitle}>{pub.title}</p>
-                <p style={styles.entrySubtitle}>{pub.publisher} {pub.publicationDate && `| ${pub.publicationDate}`}</p>
-                {pub.description && <p style={styles.entryText}>{pub.description}</p>}
-              </div>
-            )
-          ))}
-        </div>
-      )}
+      ))}
     </div>
   );
 }

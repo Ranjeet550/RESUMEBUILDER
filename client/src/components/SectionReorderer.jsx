@@ -23,8 +23,19 @@ export default function SectionReorderer() {
   const [draggedItem, setDraggedItem] = useState(null);
 
   useEffect(() => {
-    const order = resume.sectionOrder || Object.keys(sectionLabels);
-    setSections(order);
+    // Get all available sections from sectionLabels
+    const allSections = Object.keys(sectionLabels);
+    
+    // If resume has a sectionOrder, use it but ensure all sections are included
+    if (resume.sectionOrder && Array.isArray(resume.sectionOrder)) {
+      // Add any missing sections that aren't in the saved order
+      const missingSection = allSections.filter(s => !resume.sectionOrder.includes(s));
+      const order = [...resume.sectionOrder, ...missingSection];
+      setSections(order);
+    } else {
+      // Use default order if no sectionOrder exists
+      setSections(allSections);
+    }
   }, [resume.sectionOrder]);
 
   const moveUp = (index) => {
