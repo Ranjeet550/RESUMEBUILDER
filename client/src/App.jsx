@@ -1,8 +1,10 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import ResumeEditor from './pages/ResumeEditor';
+import Home from './components/home/Home';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
+import Dashboard from './components/dashboard/Dashboard';
+import Profile from './pages/auth/Profile';
+import ResumeEditor from './pages/resume/ResumeEditor';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuthStore } from './store/authStore';
 
@@ -12,6 +14,8 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Navigate to="/" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route
@@ -19,6 +23,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />
@@ -38,7 +50,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   );

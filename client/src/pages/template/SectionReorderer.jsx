@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useResumeStore } from '../store/resumeStore';
+import { useResumeStore } from '../../store/resumeStore';
 import { DragOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { Button, Space } from 'antd';
 

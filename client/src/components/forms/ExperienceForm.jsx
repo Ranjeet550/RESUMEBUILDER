@@ -1,7 +1,7 @@
 import { Form, Input, Button, Space, Checkbox, Card } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useResumeStore } from '../../store/resumeStore';
-import AISuggestionButton from '../AISuggestionButton';
+import AISuggestionButton from '../../pages/resume/AISuggestionButton';
 
 export default function ExperienceForm() {
   const resume = useResumeStore((state) => state.resume);

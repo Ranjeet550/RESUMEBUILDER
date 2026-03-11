@@ -2,7 +2,7 @@ import { Form, Input } from 'antd';
 import { MailOutlined, PhoneOutlined, EnvironmentOutlined, LinkOutlined, LinkedinOutlined, GithubOutlined, FileTextOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { useResumeStore } from '../../store/resumeStore';
-import AISuggestionButton from '../AISuggestionButton';
+import AISuggestionButton from '../../pages/resume/AISuggestionButton';
 
 export default function PersonalInfoForm() {
   const resume = useResumeStore((state) => state.resume);

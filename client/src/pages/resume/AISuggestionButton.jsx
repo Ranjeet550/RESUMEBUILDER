@@ -1,7 +1,7 @@
 import { Button, Spin, message } from 'antd';
 import { ThunderboltOutlined } from '@ant-design/icons';
 import { useState } from 'react';
-import { getAISuggestion } from '../api/aiSuggestions';
+import { getAISuggestion } from '../../api/aiSuggestions';
 
 const gradientStyle = `
   @keyframes gradient {
@@ -71,7 +71,7 @@ export default function AISuggestionButton({ fieldType, context, onSuggestion })
         e.currentTarget.style.transform = 'translateY(0) scale(1)';
       }}
     >
-      {loading ? 'Generating...' : 'AI Suggestion'}
+      {loading ? 'Generating...' : 'Ask AI'}
     </Button>
   );
 }

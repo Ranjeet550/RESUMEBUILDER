@@ -1,6 +1,6 @@
 import { Select, Space } from 'antd';
 import { BgColorsOutlined } from '@ant-design/icons';
-import { themes } from '../config/theme';
+import { themes } from '../../config/theme';
 
 export default function ThemeSwitcher({ currentTheme, onThemeChange }) {
   const themeOptions = Object.entries(themes).map(([key, value]) => ({

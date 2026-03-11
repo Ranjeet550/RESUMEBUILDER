@@ -1,7 +1,7 @@
 import { Form, Input, Button, Card, Tag } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useResumeStore } from '../../store/resumeStore';
-import AISuggestionButton from '../AISuggestionButton';
+import AISuggestionButton from '../../pages/resume/AISuggestionButton';
 
 export default function ProjectsForm() {
   const resume = useResumeStore((state) => state.resume);

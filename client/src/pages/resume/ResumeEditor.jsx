@@ -3,25 +3,23 @@ import { Layout, Spin, message, Button, Tabs, ConfigProvider, Drawer } from 'ant
 import { SaveOutlined, ArrowLeftOutlined, DownloadOutlined, BgColorsOutlined } from '@ant-design/icons';
 import html2pdf from 'html2pdf.js';
 import { useParams, useNavigate } from 'react-router-dom';
-import api from '../api/axios';
-import { useResumeStore } from '../store/resumeStore';
-import { getTheme } from '../config/theme';
-import PersonalInfoForm from '../components/forms/PersonalInfoForm';
-import ExperienceForm from '../components/forms/ExperienceForm';
-import EducationForm from '../components/forms/EducationForm';
-import SkillsForm from '../components/forms/SkillsForm';
-import ProjectsForm from '../components/forms/ProjectsForm';
-import CertificationsForm from '../components/forms/CertificationsForm';
-import LanguagesForm from '../components/forms/LanguagesForm';
-import VolunteerForm from '../components/forms/VolunteerForm';
-import AwardsForm from '../components/forms/AwardsForm';
-import PublicationsForm from '../components/forms/PublicationsForm';
-import ResumePreview from '../components/preview/ResumePreview';
-import ThemeSwitcherVisual from '../components/ThemeSwitcherVisual';
-import TemplateSwitcherVisual from '../components/TemplateSwitcherVisual';
-import SectionReorderer from '../components/SectionReorderer';
-
-const { Content } = Layout;
+import api from '../../api/axios';
+import { useResumeStore } from '../../store/resumeStore';
+import { getTheme } from '../../config/theme';
+import PersonalInfoForm from '../../components/forms/PersonalInfoForm';
+import ExperienceForm from '../../components/forms/ExperienceForm';
+import EducationForm from '../../components/forms/EducationForm';
+import SkillsForm from '../../components/forms/SkillsForm';
+import ProjectsForm from '../../components/forms/ProjectsForm';
+import CertificationsForm from '../../components/forms/CertificationsForm';
+import LanguagesForm from '../../components/forms/LanguagesForm';
+import VolunteerForm from '../../components/forms/VolunteerForm';
+import AwardsForm from '../../components/forms/AwardsForm';
+import PublicationsForm from '../../components/forms/PublicationsForm';
+import ResumePreview from './ResumePreview';
+import ThemeSwitcherVisual from '../template/ThemeSwitcherVisual';
+import TemplateSwitcherVisual from '../template/TemplateSwitcherVisual';
+import SectionReorderer from '../template/SectionReorderer';
 
 export default function ResumeEditor() {
   const { id } = useParams();
@@ -55,6 +53,10 @@ export default function ResumeEditor() {
       setCurrentTemplate(resume.template);
     }
   }, [resume]);
+
+  useEffect(() => {
+    // Force preview to re-render when template or theme changes
+  }, [currentTemplate, currentTheme]);
 
   const fetchResume = async () => {
     setLoading(true);
@@ -303,7 +305,7 @@ export default function ResumeEditor() {
               minWidth: 0,
               display: isMobile ? 'none' : 'block'
             }}>
-              <ResumePreview template={currentTemplate} theme={currentTheme} />
+              <ResumePreview key={`${currentTemplate}-${currentTheme}`} template={currentTemplate} theme={currentTheme} />
             </div>
           </div>
         </Layout.Content>

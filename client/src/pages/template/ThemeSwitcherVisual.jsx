@@ -1,6 +1,6 @@
 import { Card, Row, Col, Tooltip, Button } from 'antd';
 import { CheckCircleOutlined, BgColorsOutlined, CrownOutlined, HeartOutlined, FireOutlined, BulbOutlined, SmileOutlined, PlusOutlined, MoonOutlined } from '@ant-design/icons';
-import { themes } from '../config/theme';
+import { themes } from '../../config/theme';
 
 const iconMap = {
   BgColorsOutlined,

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Form, Input, Button, Card, message, Spin } from 'antd';
-import { UserOutlined, LockOutlined, MailOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, MailOutlined, ArrowRightOutlined, HomeOutlined } from '@ant-design/icons';
 import { useNavigate, Link } from 'react-router-dom';
-import api from '../api/axios';
-import { useAuthStore } from '../store/authStore';
+import api from '../../api/axios';
+import { useAuthStore } from '../../store/authStore';
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
@@ -35,12 +35,92 @@ export default function Register() {
       justifyContent: 'center',
       alignItems: 'center',
       minHeight: '100vh',
-      padding: '20px'
+      padding: '20px',
+      background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+      position: 'relative',
+      overflow: 'hidden',
     }}>
+      {/* Ripple Grid Background */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: `
+          linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.08) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.08) 75%, rgba(255, 255, 255, 0.08) 76%, transparent 77%, transparent),
+          linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.08) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.08) 75%, rgba(255, 255, 255, 0.08) 76%, transparent 77%, transparent)
+        `,
+        backgroundSize: '120px 120px',
+        animation: 'rippleGrid 20s linear infinite',
+        zIndex: 1,
+      }}></div>
+
+      {/* Animated circles */}
+      <div style={{
+        position: 'absolute',
+        top: '-50%',
+        right: '-10%',
+        width: '500px',
+        height: '500px',
+        background: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: '50%',
+        animation: 'float 6s ease-in-out infinite',
+        zIndex: 1,
+      }}></div>
+      <div style={{
+        position: 'absolute',
+        bottom: '-30%',
+        left: '-5%',
+        width: '400px',
+        height: '400px',
+        background: 'rgba(255, 255, 255, 0.08)',
+        borderRadius: '50%',
+        animation: 'float 8s ease-in-out infinite 1s',
+        zIndex: 1,
+      }}></div>
+
       <div style={{
         width: '100%',
-        maxWidth: '420px'
+        maxWidth: '420px',
+        position: 'relative',
+        zIndex: 2,
       }}>
+        {/* Home Icon Button */}
+        <div style={{
+          position: 'absolute',
+          top: '-60px',
+          left: 0,
+          zIndex: 10,
+        }}>
+          <Button
+            type="primary"
+            shape="circle"
+            size="large"
+            icon={<HomeOutlined style={{ fontSize: '1.2rem' }} />}
+            onClick={() => navigate('/')}
+            style={{
+              background: '#ffffff',
+              color: '#10b981',
+              border: 'none',
+              boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
+              width: '50px',
+              height: '50px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.3s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.1)';
+              e.currentTarget.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.2)';
+            }}
+          />
+        </div>
         <Card style={{
           borderRadius: '16px',
           boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
@@ -58,7 +138,7 @@ export default function Register() {
               letterSpacing: '-0.5px',
               lineHeight: '1.2'
             }}>
-              Resume Builder
+              Resumify
             </h1>
             <p style={{
               fontSize: '15px',
@@ -269,6 +349,21 @@ export default function Register() {
           </div>
         </Card>
       </div>
+
+      <style>{`
+        @keyframes rippleGrid {
+          0% {
+            background-position: 0 0;
+          }
+          100% {
+            background-position: 120px 120px;
+          }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
+        }
+      `}</style>
     </div>
   );
 }
